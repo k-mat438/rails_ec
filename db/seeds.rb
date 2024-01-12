@@ -17,7 +17,7 @@ product1.save!
 
 product2 = Product.new(
   name: "おいしいお水",
-  price: "200円"
+  price: "200円",
   description: "酸素と水素の化合物です。常温で無色無臭の透明な液体です。"
 )
 product2.image.attach(io: File.open(Rails.root.join('app/assets/images/image.jpg')), filename: 'image.jpg')
