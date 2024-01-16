@@ -1,0 +1,22 @@
+  <!-- 名前 -->
+<div class="form-group">
+  <%= f.label :name, class: 'text-black' %>
+  <%= f.text_field :name, class: 'form-control' %>
+</div>
+<!-- 値段 -->
+<div class="form-group">
+  <%= f.label :price, class: 'text-black' %>
+  <%= f.text_field :price, class: 'form-control' %>
+</div>
+<!-- 画像 -->
+<div class="form-group">
+  <%= f.label :image, class: 'text-black' %>
+  <%= f.file_field :image, class: 'form-control' %>
+</div>
+<!-- 商品紹介 -->
+<div class="form-group row">
+  <%= f.label :description, '商品紹介(255文字まで) ', class:'col-md-3 col-form-label' %>
+  <div class="col-md-9">
+    <%= f.text_area :description, class: "form-control", rows: "3", placeholder:"説明記入欄" %>
+  </div>
+</div>

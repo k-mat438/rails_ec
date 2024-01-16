@@ -1,0 +1,13 @@
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <h2 class="title">商品編集</h2>
+      <%= form_for @product, url: { controller: "items", action:"update"} do |f| %>
+        <%= render partial: 'form', locals: {f: f} %>
+        <!-- 作成 -->
+        <%= f.submit "更新", class: 'btn-block' %>
+        <%= link_to "戻る", admin_items_path, class: 'btn-block' %>
+      <% end %>
+    </div>
+  </div>
+</section>
