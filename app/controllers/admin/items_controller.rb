@@ -10,16 +10,18 @@ module Admin
     end
 
     def new
-      @product = Product.new
+      @product = Product.new(flash[:product])
     end
 
     def create
-      product = Product.new(product_params)
+      @product = Product.new(product_params)
 
-      if product.save
+      if @product.save
         redirect_to admin_items_path
       else
-        render :new
+        flash[:error_messages] = @product.errors.full_messages
+        flash[:product] = @product
+        redirect_to new_admin_item_path
       end
     end
 
