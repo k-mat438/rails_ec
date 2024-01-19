@@ -6,6 +6,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  resources :products, except: [:index]
   root 'products#index'
+  resources :products, only: %i[index show]
+
+  namespace :admin do
+    resources :products
+  end
 end
