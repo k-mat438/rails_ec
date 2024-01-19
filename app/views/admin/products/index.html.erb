@@ -4,7 +4,7 @@
   <!-- Section-->
   <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-      <%= link_to new_admin_item_path, class: "btn btn-outline-dark" do %>
+      <%= link_to new_admin_product_path, class: "btn btn-outline-dark" do %>
         <span>商品作成</span>
       <% end %>
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -13,10 +13,10 @@
             <div class="card h-100">
               <!-- Sale badge-->
               <div class="badge bg-secondary position-absolute" style="bottom: 2.5rem; right: 0.5rem">
-                <%= link_to '編集',edit_admin_item_path(product),class:"text-white" %>
+                <%= link_to '編集',edit_admin_product_path(product),class:"text-white" %>
               </div>
               <div class="badge bg-danger position-absolute" style="bottom: 1.0rem; right: 0.5rem">
-                <%= link_to '削除', "items/#{product.id}", data: { turbo_method: :delete }, class:"text-white" %>
+                <%= link_to '削除', "products/#{product.id}", data: { turbo_method: :delete }, class:"text-white" %>
               </div>
               <!-- Product image -->
               <%#= link_to edit_admin_item_path(product) do %>

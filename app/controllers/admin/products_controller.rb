@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  class ItemsController < ApplicationController
+  class ProductsController < ApplicationController
     before_action :basic_auth
     before_action :set_target_product, only: %i[edit update destroy]
 
@@ -17,11 +17,11 @@ module Admin
       @product = Product.new(product_params)
 
       if @product.save
-        redirect_to admin_items_path
+        redirect_to admin_products_path
       else
         flash[:error_messages] = @product.errors.full_messages
         flash[:product] = @product
-        redirect_to new_admin_item_path
+        redirect_to new_admin_product_path
       end
     end
 
@@ -29,12 +29,12 @@ module Admin
 
     def update
       @product.update(product_params)
-      redirect_to admin_items_path
+      redirect_to admin_products_path
     end
 
     def destroy
       @product.destroy && @product.image.purge
-      redirect_to admin_items_path
+      redirect_to admin_products_path
     end
 
     private
