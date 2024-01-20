@@ -3,7 +3,7 @@
     <div class="row gx-4 gx-lg-5 align-items-center">
       <h2 class="title">商品作成</h2>
       <%= render partial: 'shared/error_messages' %>
-      <%= form_for @product, url: { controller: "products", action:"create"} do |f| %>
+      <%= form_with model: @product, url: { controller: "products", action:"create"} do |f| %>
         <%= render partial: 'form', locals: {f: f} %>
         <!-- 作成 -->
         <%= f.submit "作成", class: 'btn-block' %>

@@ -11,11 +11,11 @@
         </div>
         <p class="lead"><%= @product.description %></p>
         <div class="d-flex">
-          <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-          <button class="btn btn-outline-dark flex-shrink-0" type="button">
-            <i class="bi-cart-fill me-1"></i>
-            Add to cart
-          </button>
+          <%= form_with url: cart_products_path(product_id: @product.id), class:"d-flex",local:true do |f| %>
+            <%= f.text_field :quantity, class: "form-control text-center me-3", style: "max-width: 3rem", value: "1",id:"inputQuantity" %>
+            <%=f.submit "Add to Cart", class:"btn btn-outline-dark flex-shrink-0" %>
+          <% end %>
+          <%#= button_to "  Add to cart", cart_products_path(product_id: @product.id), data: { "turbo-method": :post },class:"btn btn-outline-dark flex-shrink-0" %>
         </div>
       </div>
     </div>

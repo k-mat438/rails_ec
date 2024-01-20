@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'cart_products/index'
   # resources :tasks
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -9,6 +8,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   root 'products#index'
   resources :products, only: %i[index show]
+  resources :cart_products, only: %i[index create destroy]
 
   namespace :admin do
     resources :products
