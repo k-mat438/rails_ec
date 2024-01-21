@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   root 'products#index'
   resources :products, only: %i[index show]
   resources :cart_products, only: %i[index create destroy]
+  # post "/cart_products", to: "cart_products#create_by_number"
 
   namespace :admin do
     resources :products

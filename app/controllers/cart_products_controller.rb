@@ -12,7 +12,12 @@ class CartProductsController < ApplicationController
       @cart_product = @current_cart.cart_products.build(product_id: params[:product_id])
       @cart_product.save
     end
-    @cart_product.increment!(:quantity, 1)
+    if params[:quantity]
+      @cart_product.increment(:quantity, params[:quantity].to_i)
+    else
+      @cart_product.increment(:quantity, 1)
+    end
+    @cart_product.save
     redirect_to cart_products_path
   end
 end
