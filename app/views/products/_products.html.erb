@@ -22,7 +22,7 @@
               <div class="bi-star-fill"></div>
             </div>
             <!-- Product price-->
-            <%= product.price %>
+            <%= number_to_currency(product.price, unit: "円") %>
           </div>
         </div>
         <!-- Product actions-->
