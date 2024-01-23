@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   root 'products#index'
   resources :products, only: %i[index show]
+  resources :cart_products, only: %i[index create destroy]
 
   namespace :admin do
     resources :products
