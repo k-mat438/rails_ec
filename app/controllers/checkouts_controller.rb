@@ -9,6 +9,7 @@ class CheckoutsController < ApplicationController
     end
     if @order.save
       flash[:notice] = '購入ありがとうございます'
+      @current_cart.cart_products.destroy_all
       redirect_to products_path
     else
       redirect_to cart_products_path
