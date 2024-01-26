@@ -6,6 +6,7 @@ class CartProductsController < ApplicationController
     @subtotal = current_product.inject(0) do |sum, cart_product|
       sum + cart_product.quantity * cart_product.product.price.to_i
     end
+    @order = Order.new
   end
 
   def create

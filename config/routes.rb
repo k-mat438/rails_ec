@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   # root "articles#index"
   root 'products#index'
   resources :products, only: %i[index show]
-  resources :cart_products, only: %i[index create destroy]
+  resources :cart_products, only: %i[index create destroy] do
+    collection do
+      resources :checkouts, only: %i[create]
+      # post 'check', to: 'check#checkouts'
+    end
+  end
 
   namespace :admin do
     resources :products
