@@ -18,7 +18,7 @@ class CheckoutsController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:firstname, :lastname, :username, :email, :address1, :address2, :country, :state, :zip,
-                                  :cardname, :cardnum, :expiration, :cvv, :cart_id)
+    params.require(:order).permit(:firstname, :lastname, :username, :email, :address1, :address2, :country, :state,
+                                  :zip, :cardname, :cardnum, :expiration, :cvv, :cart_id)
   end
 end
