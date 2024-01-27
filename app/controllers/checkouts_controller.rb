@@ -9,11 +9,7 @@ class CheckoutsController < ApplicationController
     end
 
     if @order.save
-      @current_cart.cart_products.each do |cart_product|
-        @order.order_products.build(name: cart_product.product.name,
-                                    price: cart_product.product.price,
-                                    quantity: cart_product.quantity).save
-      end
+      params_order
       flash[:notice] = '購入ありがとうございます'
       @current_cart.cart_products.destroy_all
       redirect_to products_path
@@ -27,5 +23,13 @@ class CheckoutsController < ApplicationController
   def order_params
     params.require(:order).permit(:firstname, :lastname, :username, :email, :address1, :address2, :country, :state,
                                   :zip, :cardname, :cardnum, :expiration, :cvv, :cart_id)
+  end
+
+  def params_order
+    @current_cart.cart_products.each do |cart_product|
+      @order.order_products.build(name: cart_product.product.name,
+                                  price: cart_product.product.price,
+                                  quantity: cart_product.quantity).save
+    end
   end
 end
