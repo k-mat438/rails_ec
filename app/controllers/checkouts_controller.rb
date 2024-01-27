@@ -7,7 +7,13 @@ class CheckoutsController < ApplicationController
     @order.amount = @current_cart.cart_products.inject(0) do |sum, cart_product|
       sum + cart_product.quantity * cart_product.product.price.to_i
     end
+
     if @order.save
+      @current_cart.cart_products.each do |cart_product|
+        @order.order_products.build(name: cart_product.product.name,
+                                    price: cart_product.product.price,
+                                    quantity: cart_product.quantity).save
+      end
       flash[:notice] = '購入ありがとうございます'
       @current_cart.cart_products.destroy_all
       redirect_to products_path
