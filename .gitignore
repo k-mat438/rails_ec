@@ -36,3 +36,4 @@
 /node_modules
 
 /.env
+/spec/mailers/order_mailer_spec.rb
