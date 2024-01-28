@@ -10,7 +10,7 @@ class CheckoutsController < ApplicationController
 
     if @order.save
       params_order
-      CheckoutMailer.creation_email(@order).deliver_later
+      OrderMailer.creation_email(@order).deliver_later
       flash[:notice] = '購入ありがとうございます'
       @current_cart.cart_products.destroy_all
       redirect_to products_path
