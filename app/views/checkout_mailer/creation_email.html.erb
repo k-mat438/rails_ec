@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Thank you for the order</h1>
+
+    <p><%= "Total: #{number_to_currency(@order.amount, unit: "¥", format: "%u %n" )}"%></p>
+    <% @order.order_products.each do |order| %>
+      <li><%= "Product name: #{order.name}" %></li>
+      <li><%= "Number of orders: #{order.quantity}" %></li><br>
+    <% end %>
+  </body>
+</html>
