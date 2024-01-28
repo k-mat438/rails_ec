@@ -10,8 +10,7 @@ class CheckoutsController < ApplicationController
 
     if @order.save
       params_order
-      OrderMailer.creation_email(@order).deliver_later
-      flash[:notice] = '購入ありがとうございます'
+      send_mail
       @current_cart.cart_products.destroy_all
       redirect_to products_path
     else
@@ -34,5 +33,10 @@ class CheckoutsController < ApplicationController
                                   price: cart_product.product.price,
                                   quantity: cart_product.quantity).save
     end
+  end
+
+  def send_mail
+    OrderMailer.creation_email(@order).deliver_later
+    flash[:notice] = '購入ありがとうございます'
   end
 end
