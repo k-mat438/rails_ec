@@ -15,6 +15,8 @@ class CheckoutsController < ApplicationController
       @current_cart.cart_products.destroy_all
       redirect_to products_path
     else
+      flash[:error_messages] = @order.errors.full_messages
+      flash[:order] = @order
       redirect_to cart_products_path
     end
   end
