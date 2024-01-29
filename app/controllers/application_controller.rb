@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV['BASIC_AUTH_USER'] && password == ENV['BASIC_AUTH_PASSWORD']
+    end
+  end
+
   def current_cart
     # sessionあれば、session維持
     if session[:cart_id]
@@ -19,10 +25,6 @@ class ApplicationController < ActionController::Base
   end
 
   def total_quantity
-    @total = if @current_cart
-               @current_cart.cart_products.inject(0) { |sum, cart_product| sum + cart_product.quantity }
-             else
-               0
-             end
+    @total = @current_cart.cart_products.inject(0) { |sum, cart_product| sum + cart_product.quantity }
   end
 end

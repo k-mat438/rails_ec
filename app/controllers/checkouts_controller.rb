@@ -2,21 +2,13 @@
 
 class CheckoutsController < ApplicationController
   def create
-    @order = Order.new(order_params)
-    @order.cart_id = @current_cart.id
-    @order.amount = @current_cart.cart_products.inject(0) do |sum, cart_product|
-      sum + cart_product.quantity * cart_product.product.price.to_i
-    end
+    @order = @current_cart.orders.build(order_params)
+    @order.amount = @current_cart.total_amount
 
     if @order.save
-      params_order
-      send_mail
-      @current_cart.cart_products.destroy_all
-      redirect_to products_path
+      order_completed
     else
-      flash[:error_messages] = @order.errors.full_messages
-      flash[:order] = @order
-      redirect_to cart_products_path
+      order_fail
     end
   end
 
@@ -27,16 +19,25 @@ class CheckoutsController < ApplicationController
                                   :zip, :cardname, :cardnum, :expiration, :cvv, :cart_id)
   end
 
-  def params_order
+  def create_order_products
     @current_cart.cart_products.each do |cart_product|
-      @order.order_products.build(name: cart_product.product.name,
-                                  price: cart_product.product.price,
-                                  quantity: cart_product.quantity).save
+      @order.order_products.create(name: cart_product.product.name,
+                                   price: cart_product.product.price,
+                                   quantity: cart_product.quantity)
     end
   end
 
-  def send_mail
+  def order_completed
+    create_order_products
     OrderMailer.creation_email(@order).deliver_later
     flash[:notice] = '購入ありがとうございます'
+    @current_cart.cart_products.destroy_all
+    redirect_to products_path
+  end
+
+  def order_fail
+    flash[:error_messages] = @order.errors.full_messages
+    flash[:order] = @order
+    redirect_to cart_products_path
   end
 end

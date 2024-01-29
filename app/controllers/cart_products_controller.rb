@@ -3,9 +3,7 @@
 class CartProductsController < ApplicationController
   def index
     @cart_products = current_product.all
-    @subtotal = current_product.inject(0) do |sum, cart_product|
-      sum + cart_product.quantity * cart_product.product.price.to_i
-    end
+    @subtotal = @current_cart.total_amount
     @order = Order.new(flash[:order])
   end
 
