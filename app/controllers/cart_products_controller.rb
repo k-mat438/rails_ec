@@ -10,10 +10,7 @@ class CartProductsController < ApplicationController
   def create
     @cart_product = current_product.find_by(product_id: params[:product_id])
     # カートの中に同じ商品がある場合とない場合
-    unless @cart_product
-      @cart_product = current_product.build(product_id: params[:product_id])
-      @cart_product.save
-    end
+    @cart_product ||= current_product.create(product_id: params[:product_id])
     if params[:quantity]
       # 数量指定で追加
       @cart_product.increment(:quantity, params[:quantity].to_i)
@@ -21,7 +18,6 @@ class CartProductsController < ApplicationController
       # ひとつ追加
       @cart_product.increment(:quantity, 1)
     end
-    @cart_product.save
     redirect_to cart_products_path
   end
 
