@@ -5,11 +5,18 @@ class CheckoutsController < ApplicationController
     @order = @current_cart.orders.build(order_params)
     @order.amount = @current_cart.total_amount
 
-    if @order.save
-      order_completed
-    else
-      order_fail
+    ActiveRecord::Base.transaction do
+      @order.save!
+      create_order_products
     end
+    if @order.present?
+      OrderMailer.creation_email(@order).deliver_later
+      flash[:notice] = '購入ありがとうございます'
+      @current_cart.cart_products.destroy_all
+      redirect_to products_path
+    end
+  rescue StandardError
+    order_fail
   end
 
   private
@@ -21,18 +28,10 @@ class CheckoutsController < ApplicationController
 
   def create_order_products
     @current_cart.cart_products.each do |cart_product|
-      @order.order_products.create(name: cart_product.product.name,
-                                   price: cart_product.product.price,
-                                   quantity: cart_product.quantity)
+      @order.order_products.create!(name: cart_product.product.name,
+                                    price: cart_product.product.price,
+                                    quantity: cart_product.quantity)
     end
-  end
-
-  def order_completed
-    create_order_products
-    OrderMailer.creation_email(@order).deliver_later
-    flash[:notice] = '購入ありがとうございます'
-    @current_cart.cart_products.destroy_all
-    redirect_to products_path
   end
 
   def order_fail
