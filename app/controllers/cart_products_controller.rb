@@ -8,9 +8,7 @@ class CartProductsController < ApplicationController
   end
 
   def create
-    @cart_product = @current_cart.cart_products.find_by(product_id: params[:product_id])
-    # カートの中に同じ商品がある場合とない場合
-    @cart_product ||= @current_cart.cart_products.create(product_id: params[:product_id])
+    @cart_product = @current_cart.cart_products.find_or_create_by(product_id: params[:product_id])
     if params[:quantity]
       # 数量指定で追加
       @cart_product.increment(:quantity, params[:quantity].to_i)
