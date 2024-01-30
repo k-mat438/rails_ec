@@ -3,6 +3,11 @@
   <%= render partial: 'layouts/header' %>
   <!-- Section-->
   <section class="py-5">
+    <% if flash[:notice] %>
+      <div class="alert alert-primary" style="text-align: center">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
     <div class="container px-4 px-lg-5 mt-5">
       <%= render partial: 'products',locals: {products: @products} %>
     </div>

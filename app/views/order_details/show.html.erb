@@ -1,0 +1,45 @@
+<div class="mb-6 text-center" style="padding-top: 50px">
+  <span class="display-6 fw-bolder">
+    Products
+  </span>
+</div>
+<div class="text-center">
+  <span class="display-8 fw-bolder">
+    <%= @order.created_at.to_s(:datetime_jp) %>
+  </span>
+</div>
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <% @order.order_products.each do |order| %>
+      <div class="d-flex flex-column justify-content-center">
+        <div class="purchase-item">
+          <h4 style="color: #007bff"><%= order.name %></h4>
+          <div class="purchase-details">
+            <h5><%= number_to_currency(order.price, unit: "¥", format: "%u %n" ) %></h5>
+            <p><%= "数量：#{order.quantity}" %></p>
+            <p><%= "#{order.created_at.to_s(:datetime_jp)} 購入" %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+<style>
+  .purchase-item {
+      width: 70%;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto; /* 垂直方向にも中央配置 */
+      background-color: #f2f5f7;
+  }
+
+  .purchase-number {
+      font-size: 30px;
+      color: #007bff;
+  }
+
+  .purchase-details {
+      margin-top: 10px;
+  }
+</style>
