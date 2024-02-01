@@ -44,12 +44,14 @@
               <strong><%= number_to_currency(@subtotal, unit: "¥", format: "%u %n" ) %></strong>
             </li>
           </ul>
-          <form class="card p-2">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Promo code">
-              <button type="submit" class="btn btn-secondary">Redeem</button>
-            </div>
-          </form>
+          <div class="card p-2">
+            <%= form_with do |f|%>
+              <div class="input-group">
+                <%= f.text_field :code, class:"form-control", placeholder:"Promo code"%>
+                <%= f.submit 'Redeem', class:"btn btn-secondary" %>
+              </div>
+            <% end %>
+          </div>
         </div>
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">Billing address</h4>

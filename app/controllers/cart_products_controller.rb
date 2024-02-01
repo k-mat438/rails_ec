@@ -25,4 +25,17 @@ class CartProductsController < ApplicationController
     @cart_product.destroy
     redirect_to cart_products_path
   end
+
+  def discount
+    @coupon = Coupon.find_by(params[:code])
+    if @coupon
+      # 正しいクーポンが入力された時、割引する
+      @coupon.discount_amount
+      flash[:notice] = '適用されました'
+    else
+      # 間違ったクーポンが入力された時
+      flash[:alert] = 'お使いになったクーポンコードは、このコースでは無効です。クーポンコードは間違っていませんか？'
+    end
+    render :index
+  end
 end
