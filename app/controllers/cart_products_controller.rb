@@ -43,18 +43,4 @@ class CartProductsController < ApplicationController
   def coupon_params
     params.require(:coupon).permit(:code)
   end
-
-  def use_or_not_coupon
-    # クーポンを使うか使わないか
-    if @current_cart.coupon.present?
-      # クーポンあり時にマイナスにならないためのもの。
-      if @current_cart.total_amount < @current_cart.coupon.discount_amount
-        0
-      else
-        @current_cart.total_amount - @current_cart.coupon.discount_amount
-      end
-    else
-      @current_cart.total_amount
-    end
-  end
 end
