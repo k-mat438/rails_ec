@@ -13,6 +13,7 @@ class CheckoutsController < ApplicationController
       OrderMailer.creation_email(@order).deliver_later
       flash[:notice] = '購入ありがとうございます'
       @current_cart.cart_products.destroy_all
+      @current_cart.coupon.update(cart_id: nil)
       redirect_to products_path
     end
   rescue StandardError

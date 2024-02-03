@@ -30,32 +30,39 @@
                 </div>
               </li>
             <% end %>
-            <%#
-            <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-              <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class="text-success">−$5</span>
-            </li>
-            %>
+            <% if @current_cart.coupon.present? %>
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                  <h6 class="my-0">Promo code</h6>
+                  <small><%= @current_cart.coupon.code %></small>
+                </div>
+                <span class="text-success">-<%= number_to_currency(@current_cart.coupon.discount_amount, unit: "¥", format: "%u %n" ) %></span>
+              </li>
+            <% end %>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (JPY)</span>
               <strong><%= number_to_currency(@subtotal, unit: "¥", format: "%u %n" ) %></strong>
             </li>
           </ul>
-          <div class="card p-2">
-            <%= form_with do |f|%>
-              <div class="input-group">
-                <%= f.text_field :code, class:"form-control", placeholder:"Promo code"%>
-                <%= f.submit 'Redeem', class:"btn btn-secondary" %>
-              </div>
-            <% end %>
-          </div>
+          <% if @current_cart.coupon.blank? %>
+            <div class="card p-2">
+              <%= form_with model: @coupon, url: coupon_cart_products_path, method: :patch do |f|%>
+                <div class="input-group">
+                  <%= f.text_field :code, class:"form-control", placeholder:"Promo code"%>
+                  <%= f.submit 'Redeem', class:"btn btn-secondary" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <% if flash[:notice] %>
+            <div class="alert alert-primary" style="text-align: center">
+              <%= flash[:notice] %>
+            </div>
+          <% end %>
         </div>
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">Billing address</h4>
-          <%# ここからrailsのformを作成   form.selectの見た目の作成%>
+          <%# ここからbilling address %>
           <%= form_with model: @order,url: checkouts_path, method: :post do |f| %>
             <div class="row g-3">
               <div class="col-sm-6">
@@ -102,22 +109,14 @@
               </div>
               <div class="col-md-5">
                 <%= f.label :country, "Country", class:"form-label" %>
-                <%#select class="form-select" id="country" required>
-                  <option value="">Choose...</option>
-                  <option>United States</option>
-                </select%>
-                <%= f.select :country, class:"form-select" %>
+                <%= f.select :country, [['Japan','Japan'],['USA','USA'],['China','China'],['Germany','Germany'],['India','India']], { include_blank: "Please Select"}, {id: 'Country',class:"form-select"} %>
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
               </div>
               <div class="col-md-4">
-                <%= f.label :state, "State", class:"form-label" %>
-                <%#select class="form-select" id="state" required>
-                  <option value="">Choose...</option>
-                  <option>California</option>
-                </select%>
-                <%= f.select :state, class:"form-select" %>
+                <%= f.label :state, "State",class:"form-label" %>
+                <%= f.select :state, [['Tokyo','Tokyo'],['Osaka','Osaka'],['Fukuoka','Fukuoka']],{include_blank: "Please Select"},{ class:"form-select"} %>
                 <div class="invalid-feedback">
                   Please provide a valid state.
                 </div>

@@ -3,8 +3,9 @@
 class CartProductsController < ApplicationController
   def index
     @cart_products = @current_cart.cart_products.all
-    @subtotal = @current_cart.total_amount
+    @subtotal = use_or_not_coupon
     @order = Order.new(flash[:order])
+    @coupon = Coupon.new
   end
 
   def create
@@ -26,16 +27,34 @@ class CartProductsController < ApplicationController
     redirect_to cart_products_path
   end
 
-  def discount
-    @coupon = Coupon.find_by(params[:code])
+  def coupon
+    @coupon = Coupon.find_by(coupon_params)
     if @coupon
-      # 正しいクーポンが入力された時、割引する
-      @coupon.discount_amount
+      @coupon.update(cart_id: @current_cart.id)
       flash[:notice] = '適用されました'
     else
-      # 間違ったクーポンが入力された時
-      flash[:alert] = 'お使いになったクーポンコードは、このコースでは無効です。クーポンコードは間違っていませんか？'
+      flash[:notice] = 'お使いになったクーポンコードは、このコースでは無効です'
     end
-    render :index
+    redirect_to cart_products_path
+  end
+
+  private
+
+  def coupon_params
+    params.require(:coupon).permit(:code)
+  end
+
+  def use_or_not_coupon
+    # クーポンを使うか使わないか
+    if @current_cart.coupon.present?
+      # クーポンあり時にマイナスにならないためのもの。
+      if @current_cart.total_amount < @current_cart.coupon.discount_amount
+        0
+      else
+        @current_cart.total_amount - @current_cart.coupon.discount_amount
+      end
+    else
+      @current_cart.total_amount
+    end
   end
 end

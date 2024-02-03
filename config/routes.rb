@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :products, only: %i[index show]
   resources :cart_products, only: %i[index create destroy] do
     collection do
+      patch 'coupon', to: 'cart_products#coupon'
       resources :checkouts, only: %i[create]
     end
   end
