@@ -27,7 +27,7 @@ class CartProductsController < ApplicationController
     redirect_to cart_products_path
   end
 
-  def coupon
+  def update
     @coupon = Coupon.find_by(coupon_params)
     if @coupon
       @coupon.update(cart_id: @current_cart.id)
