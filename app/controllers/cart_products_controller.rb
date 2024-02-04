@@ -3,7 +3,7 @@
 class CartProductsController < ApplicationController
   def index
     @cart_products = @current_cart.cart_products.all
-    @subtotal = use_or_not_coupon
+    @subtotal = @current_cart.use_or_not_coupon
     @order = Order.new(flash[:order])
     @coupon = Coupon.new
   end

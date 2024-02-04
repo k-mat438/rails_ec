@@ -3,7 +3,7 @@
 class CheckoutsController < ApplicationController
   def create
     @order = @current_cart.orders.build(order_params)
-    @order.amount = use_or_not_coupon
+    @order.amount = @current_cart.use_or_not_coupon
 
     ActiveRecord::Base.transaction do
       @order.save!
