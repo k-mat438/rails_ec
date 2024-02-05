@@ -3,8 +3,9 @@
 class CartProductsController < ApplicationController
   def index
     @cart_products = @current_cart.cart_products.all
-    @subtotal = @current_cart.total_amount
+    @subtotal = @current_cart.use_or_not_coupon
     @order = Order.new(flash[:order])
+    @coupon = Coupon.new
   end
 
   def create
@@ -24,5 +25,22 @@ class CartProductsController < ApplicationController
     @cart_product = @current_cart.cart_products.find_by(product_id: params[:id])
     @cart_product.destroy
     redirect_to cart_products_path
+  end
+
+  def update
+    @coupon = Coupon.find_by(coupon_params)
+    if @coupon
+      @coupon.update(cart_id: @current_cart.id)
+      flash[:notice] = '適用されました'
+    else
+      flash[:notice] = 'お使いになったクーポンコードは、このコースでは無効です'
+    end
+    redirect_to cart_products_path
+  end
+
+  private
+
+  def coupon_params
+    params.require(:coupon).permit(:code)
   end
 end
